@@ -51,7 +51,7 @@ button {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 8px;
+  gap: 2px;
 }
 
 /* 横長（ランドスケープ）時 → 横一列 */
@@ -113,7 +113,7 @@ button {
 
 #gameContainer {
   position: relative; 
-  width: 80%;
+  width: 60%;
   height: 400px;
   margin: 20px auto;
   padding: 10px;
@@ -123,7 +123,7 @@ button {
   box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
 }
 
-@media (max-width: 600px) {
+@media (width: 60%) {
   #gameContainer {
     width: 90vw;
     height:400px;
@@ -175,7 +175,7 @@ button {
   <body>
     <div id="gameContainer">
     <h1 id="title">ひきざんカード</h1>
-    <h2>くりさがりなし</h2>
+    <h2 id="title2">くりさがりなし</h2>
     <button id="startBtn">スタート</button>
     <div id="game" style="display:none;">
       <div id="question"></div>
@@ -232,6 +232,7 @@ for (let right = 1; right <= 9; right++) {
         startTime = new Date();
         startBtn.style.display = "none";
         title.style.display = "none";
+        title2.style.display = "none";
         gameDiv.style.display = "";
         resultDiv.textContent = "";
         document.getElementById("remaining").style.display = "block";
@@ -246,6 +247,7 @@ backBtn.addEventListener("click", () => {
 
   startBtn.style.display = "inline-block";
   title.style.display = "block";
+  title2.style.display = "block";
   gameDiv.style.display = "none";
   backBtn.style.display = "none";
   resultDiv.textContent = "";
