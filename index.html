@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>ひきざんカード</title>
+    <style>
+body {
+  font-family: sans-serif;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  color: black;
+  touch-action: manipulation;
+}
+
+
+#game {
+  margin-top: 20px;
+}
+
+#question {
+  font-size: 48px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.answer-btn {
+  width: 20vw;
+  height: 20vw;
+  max-width: 80px;
+  max-height: 80px;
+  margin: 6px;
+  font-size: 32px;
+  border-radius: 10px;
+  background-color: #f5f5f5;
+  color: blue;
+  font-weight: bold;
+  border: 2px solid #ccc;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.answer-btn:hover {
+  background-color: #cceeff;
+}
+
+#feedback {
+  margin-top: 20px;
+  font-weight: bold;
+  font-size: 28px;
+}
+
+#result {
+  margin-top: 30px;
+  font-size: 24px;
+}
+
+#startBtn {
+  font-size: 28px;
+  padding: 16px 32px;
+  border: none;
+  border-radius: 10px;
+  background-color: #ffcc66;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 40px;
+}
+
+#startBtn:hover {
+  background-color: #ff9900;
+}
+
+#remaining {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  background-color: #ffffcc;
+  border: 1px solid #cccccc;
+  padding: 5px 7px;
+  border-radius: 10px;
+  font-size: 20px;
+  display: none;
+}
+
+#gameContainer {
+  position: relative; 
+  max-width: 500px;
+  height: 400px;
+  margin: 20px auto;
+  padding: 10px;
+  background-color: #ffffff;
+  border: 2px solid #cccccc;
+  border-radius: 16px;
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+}
+
+@media (max-width: 600px) {
+  #gameContainer {
+    width: 90vw;
+    height:400px;
+    padding: 16px;
+  }
+}
+
+#game, #result, #remaining {
+  text-align: center;
+}
+
+#bottomBar {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#backBtn {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  display: none;
+  font-size: 18px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  background-color: #ff9999;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#backBtn:hover {
+  background-color: #ff5555;
+}
+
+#title {
+  margin-top: 80px;
+  text-align: center;
+  font-size: 32px;
+}
+
+
+    </style>
+  </head>
+  <body>
+    <div id="gameContainer">
+    <h1 id="title">ひきざんカード</h1>
+    <h2>くりさがりなし</h2>
+    <button id="startBtn">スタート</button>
+    <div id="game" style="display:none;">
+      <div id="question"></div>
+      <div id="answerButtons"></div>
+      <div id="feedback"></div>
+    </div>
+    <div id="result"></div>
+    <div id="bottomBar">
+      <button id="backBtn">もどる</button>
+      <div id="remaining"></div>
+    </div>
+
+    </div>
+
+
+    <script>
+const problems = [];
+
+for (let left = 1; left <= 9; left++) {
+  for (let right = 1; right <= left; right++) {
+    const answer = left - right;
+    if (answer !== 0) {
+      problems.push({
+        left: left,
+        right: right,
+        answer: answer
+      });
+    }
+  }
+}
+
+for (let right = 1; right <= 9; right++) {
+  problems.push({
+    left: 10,
+    right: right,
+    answer: 10 - right
+  });
+}
+
+      let questions = [];
+      let currentQuestion = null;
+      let startTime = null;
+      let endTime = null;
+
+      const startBtn = document.getElementById("startBtn");
+      const gameDiv = document.getElementById("game");
+      const questionDiv = document.getElementById("question");
+      const answerButtonsDiv = document.getElementById("answerButtons");
+      const feedbackDiv = document.getElementById("feedback");
+      const resultDiv = document.getElementById("result");
+
+      startBtn.addEventListener("click", () => {
+        questions = [...problems].sort(() => Math.random() - 0.5);
+        startTime = new Date();
+        startBtn.style.display = "none";
+        title.style.display = "none";
+        gameDiv.style.display = "";
+        resultDiv.textContent = "";
+        document.getElementById("remaining").style.display = "block";
+        backBtn.style.display = "block";
+        feedbackDiv.textContent = "";
+        nextQuestion();
+      });
+
+      const backBtn = document.getElementById("backBtn");
+
+backBtn.addEventListener("click", () => {
+
+  startBtn.style.display = "inline-block";
+  title.style.display = "block";
+  gameDiv.style.display = "none";
+  backBtn.style.display = "none";
+  resultDiv.textContent = "";
+  feedbackDiv.textContent = "";
+  document.getElementById("remaining").style.display = "none";
+  answerButtonsDiv.innerHTML = "";
+  
+  questions = [];
+  currentQuestion = null;
+  startTime = null;
+  endTime = null;
+});
+
+      function nextQuestion() {
+if (questions.length === 0) {
+  endTime = new Date();
+  const elapsedSec = Math.floor((endTime - startTime) / 1000);
+  const minutes = Math.floor(elapsedSec / 60);
+  const seconds = elapsedSec % 60;
+  questionDiv.textContent = "おわり！";
+  document.getElementById("remaining").textContent = `のこり ${questions.length}もん`;
+  answerButtonsDiv.style.display = "none";
+  feedbackDiv.textContent = "";
+  resultDiv.textContent = `タイム：${minutes}ふん ${seconds}びょう`;
+  return;
+}
+        currentQuestion = questions.pop();
+        questionDiv.textContent = `${currentQuestion.left} - ${currentQuestion.right} = ?`;
+        feedbackDiv.textContent = "";
+        renderAnswerButtons();
+        document.getElementById("remaining").textContent = `のこり ${questions.length + 1}もん`;
+
+      }
+
+      function renderAnswerButtons() {
+        answerButtonsDiv.innerHTML = "";
+        for (let i = 0; i <= 9; i++) {
+          const btn = document.createElement("button");
+          btn.textContent = i;
+          btn.className = "answer-btn";
+          btn.addEventListener("click", () => checkAnswer(i));
+          answerButtonsDiv.appendChild(btn);
+        }
+      }
+
+      function checkAnswer(userAnswer) {
+  if (userAnswer === currentQuestion.answer) {
+    feedbackDiv.textContent = "⭕せいかい！";
+    feedbackDiv.style.color = "red";
+    feedbackDiv.style.fontSize = "28px";
+    setTimeout(() => {
+      nextQuestion();
+    }, 500);
+  } else {
+    feedbackDiv.textContent = "❌ざんねん！ もういちどやってみよう！";
+    feedbackDiv.style.color = "blue";
+    feedbackDiv.style.fontSize = "20px";
+        }
+      }
+    </script>
+  </body>
+</html>
