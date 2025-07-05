@@ -315,6 +315,7 @@ if (questions.length === 0) {
         questionDiv.textContent = `${currentQuestion.left} - ${currentQuestion.right} = ?`;
         feedbackDiv.textContent = "";
         renderAnswerButtons();
+        answerButtonsDiv.style.display = "block";
         document.getElementById("remaining").textContent = `のこり ${questions.length + 1}もん`;
 
       }
