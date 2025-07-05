@@ -54,25 +54,6 @@ button {
   gap: 2px;
 }
 
-/* 横長（ランドスケープ）時 → 横一列 */
-@media (orientation: landscape) {
-  #answerButtons {
-    flex-wrap: nowrap;
-    justify-content: center;
-  }
-}
-
-/* 縦長（ポートレート）時 → 3列3行のグリッド */
-@media (orientation: portrait) {
-  #answerButtons {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-    justify-items: center;
-  }
-}
-
-
 #feedback {
   margin-top: 20px;
   font-weight: bold;
@@ -169,7 +150,47 @@ button {
   font-size: 32px;
 }
 
+/* 縦向きのスマホ用 */
+@media (max-width: 768px) and (orientation: portrait) {
+  #gameContainer {
+    width: 90vw;
+    height: auto;   /* 内容に合わせる */
+    padding: 16px;
+  }
+  #answerButtons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    justify-items: center;
+  }
+  .answer-btn {
+    width: 25vw;
+    height: 25vw;
+    max-width: 80px;
+    max-height: 80px;
+  }
+}
 
+/* 横向きのスマホ用 */
+@media (max-width: 768px) and (orientation: landscape) {
+  #gameContainer {
+    width: 95vw;
+    height: auto;
+    padding: 16px;
+  }
+  #answerButtons {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    gap: 8px;
+  }
+  .answer-btn {
+    width: 10vw;
+    height: 10vw;
+    max-width: 60px;
+    max-height: 60px;
+  }
+}
     </style>
   </head>
   <body>
