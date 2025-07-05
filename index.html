@@ -30,10 +30,10 @@ button {
 .answer-btn {
   width: 20vw;
   height: 20vw;
-  max-width: 80px;
-  max-height: 80px;
+  max-width: 60px;
+  max-height: 60px;
   margin: 6px;
-  font-size: 32px;
+  font-size: 28px;
   border-radius: 10px;
   background-color: #f5f5f5;
   color: blue;
@@ -46,6 +46,32 @@ button {
 .answer-btn:hover {
   background-color: #cceeff;
 }
+
+#answerButtons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* 横長（ランドスケープ）時 → 横一列 */
+@media (orientation: landscape) {
+  #answerButtons {
+    flex-wrap: nowrap;
+    justify-content: center;
+  }
+}
+
+/* 縦長（ポートレート）時 → 3列3行のグリッド */
+@media (orientation: portrait) {
+  #answerButtons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    justify-items: center;
+  }
+}
+
 
 #feedback {
   margin-top: 20px;
@@ -87,7 +113,7 @@ button {
 
 #gameContainer {
   position: relative; 
-  max-width: 500px;
+  width: 80%;
   height: 400px;
   margin: 20px auto;
   padding: 10px;
@@ -254,16 +280,16 @@ if (questions.length === 0) {
 
       }
 
-      function renderAnswerButtons() {
-        answerButtonsDiv.innerHTML = "";
-        for (let i = 0; i <= 9; i++) {
-          const btn = document.createElement("button");
-          btn.textContent = i;
-          btn.className = "answer-btn";
-          btn.addEventListener("click", () => checkAnswer(i));
-          answerButtonsDiv.appendChild(btn);
-        }
-      }
+function renderAnswerButtons() {
+  answerButtonsDiv.innerHTML = "";
+  for (let i = 1; i <= 9; i++) {
+    const btn = document.createElement("button");
+    btn.textContent = i;
+    btn.className = "answer-btn";
+    btn.addEventListener("click", () => checkAnswer(i));
+    answerButtonsDiv.appendChild(btn);
+  }
+}
 
       function checkAnswer(userAnswer) {
   if (userAnswer === currentQuestion.answer) {
