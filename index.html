@@ -153,29 +153,45 @@ button {
 /* 縦向きのスマホ用 */
 @media (max-width: 768px) and (orientation: portrait) {
   #gameContainer {
-    width: 90vw;
-    height: auto;   /* 内容に合わせる */
+    width: 95vw;
+    height: 70vh;
     padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;  /* 余計な拡張防止 */
   }
+
   #answerButtons {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
+    grid-template-columns: repeat(3, 30vw);  /* 列幅を固定 */
+    justify-content: center;
     justify-items: center;
+    gap: 2px;
   }
+
   .answer-btn {
-    width: 25vw;
-    height: 25vw;
-    max-width: 80px;
-    max-height: 80px;
+  max-width: 100%;
+  max-height: 100%;
+  width: 100px;
+  height: 100px;  
+    aspect-ratio: 1/1; 
+    font-size: 35px;
+  }
+
+  #feedback {
+    max-width: 90%;    /* 長文でコンテナが広がるのを防止 */
+    word-wrap: break-word;
+    margin: 16px auto;
   }
 }
+
 
 /* 横向きのスマホ用 */
 @media (max-width: 768px) and (orientation: landscape) {
   #gameContainer {
     width: 95vw;
-    height: auto;
+    height: 70vh;
     padding: 16px;
   }
   #answerButtons {
