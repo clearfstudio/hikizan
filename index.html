@@ -264,13 +264,13 @@ button {
     <div id="gameContainer">
 <div id="startScreen">
   <h1 id="top-title">けいさんカード</h1>
-  <p>くりあがり・くりさがりなし</p>
+  <p>１０までのけいさん</p>
   <div><button id="modeAdd">たしざん</button></div>
   <div><button id="modeSub">ひきざん</button></div>
 </div>
 <div id="playScreen" style="display: none;">
     <h1 id="title">ひきざん</h1>
-    <h2 id="title2">くりさがりなし</h2>
+    <h2 id="title2">１０までのひきざん</h2>
     <button id="startBtn">スタート</button>
     <div id="game" style="display:none;">
       <div id="question"></div>
@@ -321,7 +321,7 @@ document.getElementById("modeSub").addEventListener("click", () => {
   currentMode = "subtraction";
   problems = generateProblems(currentMode);
   document.getElementById("title").textContent = "ひきざん";
-  document.getElementById("title2").textContent = "くりさがりなし";
+  document.getElementById("title2").textContent = "１０までのけいさん";
   document.getElementById("startScreen").style.display = "none";
   document.getElementById("playScreen").style.display = "";
   backBtn.style.display = "block";
@@ -331,7 +331,7 @@ document.getElementById("modeAdd").addEventListener("click", () => {
   currentMode = "addition";
   problems = generateProblems(currentMode);
   document.getElementById("title").textContent = "たしざん";
-  document.getElementById("title2").textContent = "くりあがりなし";
+  document.getElementById("title2").textContent = "１０までのけいさん";
   document.getElementById("startScreen").style.display = "none";
   document.getElementById("playScreen").style.display = "";
   backBtn.style.display = "block";
