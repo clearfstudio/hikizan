@@ -154,11 +154,26 @@ button {
   margin-top: 50px;
 }
 
+
+#startScreen button {
+  font-size: 24px;
+  padding: 12px 24px;
+  margin: 10px;
+  border-radius: 10px;
+  border: none;
+  background-color: #ffcc66;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+#startScreen button:hover {
+  background-color: #ff9900;
+}
+
 /* 縦向きのスマホ用 */
 @media (max-width: 768px) and (orientation: portrait) {
   #gameContainer {
     width: 95vw;
-    height: 75vh;
+    height: 80vh;
     padding: 16px;
     display: flex;
     flex-direction: column;
@@ -223,31 +238,25 @@ button {
   margin-top: 20px;
 }
 #startScreen h1 {
-  margin-top: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+#startScreen p {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+#startScreen button {
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 }
 #footer {
   text-align: center;
   font-size: 12px;
   color: #666;
-  margin-top: 16px;
+  margin-top: 5px;
   padding: 8px 0;
 }
-
-#startScreen button {
-  font-size: 24px;
-  padding: 12px 24px;
-  margin: 10px;
-  border-radius: 10px;
-  border: none;
-  background-color: #ffcc66;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-#startScreen button:hover {
-  background-color: #ff9900;
-}
-
 
     </style>
   </head>
