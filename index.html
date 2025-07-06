@@ -150,6 +150,10 @@ button {
   font-size: 32px;
 }
 
+#startScreen h1 {
+  margin-top: 50px;
+}
+
 /* 縦向きのスマホ用 */
 @media (max-width: 768px) and (orientation: portrait) {
   #gameContainer {
@@ -165,6 +169,7 @@ button {
   #answerButtons {
     display: grid;
     grid-template-columns: repeat(3, 30vw);  /* 列幅を固定 */
+    grid-template-rows: repeat(4, 30vw);
     justify-content: center;
     justify-items: center;
     gap: 2px;
@@ -177,6 +182,11 @@ button {
   height: 90px;  
     aspect-ratio: 1/1; 
     font-size: 35px;
+  }
+
+   .answer-btn.zero {
+    grid-column: 2 / 3;
+    grid-row: 4 / 5;
   }
 
   #feedback {
@@ -212,6 +222,9 @@ button {
 #startBtn {
   margin-top: 20px;
 }
+#startScreen h1 {
+  margin-top: 10px;
+}
 }
 #footer {
   text-align: center;
@@ -221,11 +234,32 @@ button {
   padding: 8px 0;
 }
 
+#startScreen button {
+  font-size: 24px;
+  padding: 12px 24px;
+  margin: 10px;
+  border-radius: 10px;
+  border: none;
+  background-color: #ffcc66;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+#startScreen button:hover {
+  background-color: #ff9900;
+}
+
+
     </style>
   </head>
   <body>
     <div id="gameContainer">
-    <h1 id="title">ひきざんカード</h1>
+<div id="startScreen">
+  <h1 id="top-title">けいさんカード</h1>
+  <div><button id="modeAdd">くりあがりのない　たしざん</button></div>
+  <div><button id="modeSub">くりさがりのない　ひきざん</button></div>
+</div>
+<div id="playScreen" style="display: none;">
+    <h1 id="title">ひきざん</h1>
     <h2 id="title2">くりさがりなし</h2>
     <button id="startBtn">スタート</button>
     <div id="game" style="display:none;">
@@ -238,34 +272,60 @@ button {
       <button id="backBtn">もどる</button>
       <div id="remaining"></div>
     </div>
-
+</div>
     </div>
 
 <footer id="footer">まなろっとスタジオ　がくしゅうアプリ</footer>
 
     <script>
-const problems = [];
+let problems = [];
+let currentMode = null;
+let answerBuffer = "";
 
-for (let left = 1; left <= 9; left++) {
-  for (let right = 1; right <= left; right++) {
-    const answer = left - right;
-    if (answer !== 0) {
-      problems.push({
-        left: left,
-        right: right,
-        answer: answer
-      });
+function generateProblems(mode) {
+  const list = [];
+  if (mode === "subtraction") {
+    for (let left = 1; left <= 9; left++) {
+      for (let right = 1; right <= left; right++) {
+        const answer = left - right;
+        if (answer !== 0) {
+          list.push({ left, right, answer });
+        }
+      }
+    }
+    for (let right = 1; right <= 9; right++) {
+      list.push({ left: 10, right, answer: 10 - right });
+    }
+  } else if (mode === "addition") {
+    for (let left = 1; left <= 9; left++) {
+      for (let right = 1; right <= 10 - left; right++) {
+        const answer = left + right;
+        list.push({ left, right, answer });
+      }
     }
   }
+  return list;
 }
 
-for (let right = 1; right <= 9; right++) {
-  problems.push({
-    left: 10,
-    right: right,
-    answer: 10 - right
-  });
-}
+document.getElementById("modeSub").addEventListener("click", () => {
+  currentMode = "subtraction";
+  problems = generateProblems(currentMode);
+  document.getElementById("title").textContent = "ひきざん";
+  document.getElementById("title2").textContent = "くりさがりなし";
+  document.getElementById("startScreen").style.display = "none";
+  document.getElementById("playScreen").style.display = "";
+  backBtn.style.display = "block";
+});
+
+document.getElementById("modeAdd").addEventListener("click", () => {
+  currentMode = "addition";
+  problems = generateProblems(currentMode);
+  document.getElementById("title").textContent = "たしざん";
+  document.getElementById("title2").textContent = "くりあがりなし";
+  document.getElementById("startScreen").style.display = "none";
+  document.getElementById("playScreen").style.display = "";
+  backBtn.style.display = "block";
+});
 
       let questions = [];
       let currentQuestion = null;
@@ -288,7 +348,6 @@ for (let right = 1; right <= 9; right++) {
         gameDiv.style.display = "";
         resultDiv.textContent = "";
         document.getElementById("remaining").style.display = "block";
-        backBtn.style.display = "block";
         feedbackDiv.textContent = "";
         nextQuestion();
       });
@@ -297,23 +356,27 @@ for (let right = 1; right <= 9; right++) {
 
 backBtn.addEventListener("click", () => {
 
-  startBtn.style.display = "inline-block";
-  title.style.display = "block";
-  title2.style.display = "block";
-  gameDiv.style.display = "none";
-  backBtn.style.display = "none";
-  resultDiv.textContent = "";
-  feedbackDiv.textContent = "";
-  document.getElementById("remaining").style.display = "none";
+  document.getElementById("startScreen").style.display = "";
+  document.getElementById("playScreen").style.display = "none";
   answerButtonsDiv.innerHTML = "";
+        startBtn.style.display = "";
+        title.style.display = "";
+        title2.style.display = "";
+        gameDiv.style.display = "none";
+        resultDiv.textContent = "";
+        document.getElementById("remaining").style.display = "none";
+        backBtn.style.display = "none";
+        feedbackDiv.textContent = "";
   
   questions = [];
   currentQuestion = null;
   startTime = null;
   endTime = null;
+  currentMode = null;
+  answerBuffer = "";
 });
 
-      function nextQuestion() {
+function nextQuestion() {
 if (questions.length === 0) {
   endTime = new Date();
   const elapsedSec = Math.floor((endTime - startTime) / 1000);
@@ -327,7 +390,12 @@ if (questions.length === 0) {
   return;
 }
         currentQuestion = questions.pop();
-        questionDiv.textContent = `${currentQuestion.left} - ${currentQuestion.right} = ?`;
+        let opSymbol = currentMode === "subtraction" ? "−" : "+";
+        questionDiv.innerHTML = `
+  <span id="questionLeft">${currentQuestion.left}</span> ${opSymbol}
+  <span id="questionRight">${currentQuestion.right}</span> =
+  <span id="questionAnswer">?</span>
+`;
         feedbackDiv.textContent = "";
         renderAnswerButtons();
         answerButtonsDiv.style.display = "block";
@@ -344,22 +412,59 @@ function renderAnswerButtons() {
     btn.addEventListener("click", () => checkAnswer(i));
     answerButtonsDiv.appendChild(btn);
   }
+  // 0ボタン
+const zeroBtn = document.createElement("button");
+zeroBtn.textContent = 0;
+zeroBtn.classList.add("answer-btn", "zero");
+zeroBtn.addEventListener("click", () => checkAnswer(0));
+answerButtonsDiv.appendChild(zeroBtn);
+
 }
 
-      function checkAnswer(userAnswer) {
-  if (userAnswer === currentQuestion.answer) {
-    feedbackDiv.textContent = "⭕せいかい！";
-    feedbackDiv.style.color = "red";
-    feedbackDiv.style.fontSize = "28px";
-    setTimeout(() => {
-      nextQuestion();
-    }, 500);
-  } else {
-    feedbackDiv.textContent = "❌ざんねん！ もういちどやってみよう！";
-    feedbackDiv.style.color = "blue";
-    feedbackDiv.style.fontSize = "20px";
-        }
+function checkAnswer(userAnswer) {
+  if (currentQuestion.answer === 10) {
+    // 10の場合だけ
+    answerBuffer += userAnswer;
+    if (answerBuffer.length === 1) {
+      if (answerBuffer !== "1") {
+        feedbackDiv.textContent = "❌もういちどかんがえてみよう";
+        answerBuffer = "";
+        return;
+      } else {
+        document.getElementById("questionAnswer").innerHTML = `<span style="color: red;">${userAnswer}</span>`;
       }
+    } else if (answerBuffer.length === 2) {
+      if (answerBuffer === "10") {
+        document.getElementById("questionAnswer").innerHTML = `<span style="color: red;">10</span>`;
+        feedbackDiv.textContent = "⭕せいかい！";
+        feedbackDiv.style.color = "red";
+        feedbackDiv.style.fontSize = "28px";
+        setTimeout(() => {
+          answerBuffer = "";
+          nextQuestion();
+        }, 500);
+      } else {
+        feedbackDiv.textContent = "❌ざんねん！もういちど！";
+        answerBuffer = "";
+      }
+    }
+  } else {
+    if (userAnswer === currentQuestion.answer) {
+      document.getElementById("questionAnswer").innerHTML = `<span style="color: red;">${userAnswer}</span>`;
+      feedbackDiv.textContent = "⭕せいかい！";
+      feedbackDiv.style.color = "red";
+      feedbackDiv.style.fontSize = "28px";
+      setTimeout(() => {
+        nextQuestion();
+      }, 500);
+    } else {
+      feedbackDiv.textContent = "❌ざんねん！もういちど！";
+      feedbackDiv.style.color = "blue";
+      feedbackDiv.style.fontSize = "20px";
+    }
+  }
+}
+
     </script>
   </body>
 </html>
