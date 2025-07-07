@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>ひきざんカード</title>
+    <title>けいさんカード</title>
     <style>
 body {
   font-family: sans-serif;
@@ -94,7 +94,7 @@ button {
 
 #gameContainer {
   position: relative; 
-  width: 60%;
+  width: 80%;
   height: 400px;
   margin: 20px auto;
   padding: 10px;
@@ -291,6 +291,7 @@ button {
 let problems = [];
 let currentMode = null;
 let answerBuffer = "";
+let isAnswering = false;
 
 function generateProblems(mode) {
   const list = [];
@@ -384,6 +385,7 @@ backBtn.addEventListener("click", () => {
   endTime = null;
   currentMode = null;
   answerBuffer = "";
+  isAnswering = false;
 });
 
 function nextQuestion() {
@@ -432,6 +434,8 @@ answerButtonsDiv.appendChild(zeroBtn);
 }
 
 function checkAnswer(userAnswer) {
+  if (isAnswering) return;
+
   if (currentQuestion.answer === 10) {
     // 10の場合だけ
     answerBuffer += userAnswer;
@@ -445,6 +449,7 @@ function checkAnswer(userAnswer) {
       }
     } else if (answerBuffer.length === 2) {
       if (answerBuffer === "10") {
+        isAnswering = true;
         document.getElementById("questionAnswer").innerHTML = `<span style="color: red;">10</span>`;
         feedbackDiv.textContent = "⭕せいかい！";
         feedbackDiv.style.color = "red";
@@ -452,7 +457,7 @@ function checkAnswer(userAnswer) {
         setTimeout(() => {
           answerBuffer = "";
           nextQuestion();
-        }, 500);
+        }, 300);
       } else {
         feedbackDiv.textContent = "❌ざんねん！もういちど！";
         answerBuffer = "";
@@ -460,13 +465,14 @@ function checkAnswer(userAnswer) {
     }
   } else {
     if (userAnswer === currentQuestion.answer) {
+      isAnswering = true;
       document.getElementById("questionAnswer").innerHTML = `<span style="color: red;">${userAnswer}</span>`;
       feedbackDiv.textContent = "⭕せいかい！";
       feedbackDiv.style.color = "red";
       feedbackDiv.style.fontSize = "28px";
       setTimeout(() => {
         nextQuestion();
-      }, 500);
+      }, 300);
     } else {
       feedbackDiv.textContent = "❌ざんねん！もういちど！";
       feedbackDiv.style.color = "blue";
