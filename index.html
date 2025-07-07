@@ -389,6 +389,7 @@ backBtn.addEventListener("click", () => {
 });
 
 function nextQuestion() {
+  isAnswering = false;
 if (questions.length === 0) {
   endTime = new Date();
   const elapsedSec = Math.floor((endTime - startTime) / 1000);
