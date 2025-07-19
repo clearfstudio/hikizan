@@ -41,6 +41,10 @@ button {
   border: 2px solid #ccc;
   cursor: pointer;
   transition: background-color 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 .answer-btn:hover {
@@ -169,7 +173,7 @@ button {
   background-color: #ff9900;
 }
 
-/* 縦向きのスマホ用 */
+/* 縦向きスマホ用 */
 @media (max-width: 768px) and (orientation: portrait) {
   #gameContainer {
     width: 95vw;
@@ -178,12 +182,12 @@ button {
     display: flex;
     flex-direction: column;
     align-items: center;
-    box-sizing: border-box;  /* 余計な拡張防止 */
+    box-sizing: border-box;
   }
 
   #answerButtons {
     display: grid;
-    grid-template-columns: repeat(3, 30vw);  /* 列幅を固定 */
+    grid-template-columns: repeat(3, 30vw);
     grid-template-rows: repeat(4, 30vw);
     justify-content: center;
     justify-items: center;
@@ -197,10 +201,6 @@ button {
   height: 80px;  
   aspect-ratio: 1/1; 
   font-size: 35px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
   }
 
    .answer-btn.zero {
@@ -209,14 +209,14 @@ button {
   }
 
   #feedback {
-    max-width: 90%;    /* 長文でコンテナが広がるのを防止 */
+    max-width: 90%;
     word-wrap: break-word;
     margin: 16px auto;
   }
 }
 
 
-/* 横向きのスマホ用 */
+/* 横向きスマホ用 */
 @media (max-width: 768px) and (orientation: landscape) {
   #gameContainer {
     width: 95vw;
@@ -236,24 +236,24 @@ button {
     max-height: 50px;
   }
   #title {
-  margin-top: 0px;
-}
-#startBtn {
-  margin-top: 20px;
-}
-#startScreen h1 {
-  margin-top: 5px;
-  margin-bottom: 5px;
-}
-#startScreen p {
-  margin-top: 5px;
-  margin-bottom: 5px;
-}
-#startScreen button {
-  margin-top: 5px;
-  margin-bottom: 5px;
-}
-}
+    margin-top: 0px;
+  }
+  #startBtn {
+    margin-top: 20px;
+  }
+  #startScreen h1 {
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+  #startScreen p {
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+  #startScreen button {
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+  }
 #footer {
   text-align: center;
   font-size: 12px;
@@ -266,36 +266,36 @@ button {
   </head>
   <body>
     <div id="gameContainer">
-<div id="startScreen">
-  <h1 id="top-title">けいさんカード</h1>
-  <p>１０までのけいさん</p>
-  <div><button id="modeAdd">たしざん</button></div>
-  <div><button id="modeSub">ひきざん</button></div>
-</div>
-<div id="playScreen" style="display: none;">
-    <h1 id="title">ひきざん</h1>
-    <h2 id="title2">１０までのひきざん</h2>
-    <button id="startBtn">スタート</button>
-    <div id="game" style="display:none;">
-      <div id="question"></div>
-      <div id="answerButtons"></div>
-      <div id="feedback"></div>
-    </div>
-    <div id="result"></div>
-    <div id="bottomBar">
-      <button id="backBtn">もどる</button>
-      <div id="remaining"></div>
-    </div>
-</div>
+      <div id="startScreen">
+        <h1 id="top-title">けいさんカード</h1>
+        <p>１０までのけいさん</p>
+        <div><button id="modeAdd">たしざん</button></div>
+        <div><button id="modeSub">ひきざん</button></div>
+      </div>
+      <div id="playScreen" style="display: none;">
+        <h1 id="title">ひきざん</h1>
+        <h2 id="title2">１０までのひきざん</h2>
+        <button id="startBtn">スタート</button>
+        <div id="game" style="display:none;">
+          <div id="question"></div>
+          <div id="answerButtons"></div>
+          <div id="feedback"></div>
+        </div>
+        <div id="result"></div>
+        <div id="bottomBar">
+          <button id="backBtn">もどる</button>
+          <div id="remaining"></div>
+        </div>
+      </div>
     </div>
 
-<footer id="footer">まなろっとスタジオ　がくしゅうアプリ</footer>
+    <footer id="footer">まなろっとスタジオ　がくしゅうアプリ</footer>
 
-    <script>
-let problems = [];
-let currentMode = null;
-let answerBuffer = "";
-let isAnswering = false;
+<script>
+  let problems = [];
+  let currentMode = null;
+  let answerBuffer = "";
+  let isAnswering = false;
 
 function generateProblems(mode) {
   const list = [];
@@ -342,34 +342,34 @@ document.getElementById("modeAdd").addEventListener("click", () => {
   backBtn.style.display = "block";
 });
 
-      let questions = [];
-      let currentQuestion = null;
-      let startTime = null;
-      let endTime = null;
+  let questions = [];
+  let currentQuestion = null;
+  let startTime = null;
+  let endTime = null;
 
-      const startBtn = document.getElementById("startBtn");
-      const gameDiv = document.getElementById("game");
-      const questionDiv = document.getElementById("question");
-      const answerButtonsDiv = document.getElementById("answerButtons");
-      const feedbackDiv = document.getElementById("feedback");
-      const resultDiv = document.getElementById("result");
+  const startBtn = document.getElementById("startBtn");
+  const gameDiv = document.getElementById("game");
+  const questionDiv = document.getElementById("question");
+  const answerButtonsDiv = document.getElementById("answerButtons");
+  const feedbackDiv = document.getElementById("feedback");
+  const resultDiv = document.getElementById("result");
 
-      startBtn.addEventListener("click", () => {
-        questions = [...problems].sort(() => Math.random() - 0.5);
-        startTime = new Date();
-        startBtn.style.display = "none";
-        title.style.display = "none";
-        title2.style.display = "none";
-        gameDiv.style.display = "";
-        resultDiv.textContent = "";
-        document.getElementById("remaining").style.display = "block";
-        feedbackDiv.textContent = "";
-        nextQuestion();
-      });
+  startBtn.addEventListener("click", () => {
+    questions = [...problems].sort(() => Math.random() - 0.5);
+    startTime = new Date();
+    startBtn.style.display = "none";
+    title.style.display = "none";
+    title2.style.display = "none";
+    gameDiv.style.display = "";
+    resultDiv.textContent = "";
+    document.getElementById("remaining").style.display = "block";
+    feedbackDiv.textContent = "";
+    nextQuestion();
+  });
 
-      const backBtn = document.getElementById("backBtn");
+  const backBtn = document.getElementById("backBtn");
 
-backBtn.addEventListener("click", () => {
+  backBtn.addEventListener("click", () => {
 
   document.getElementById("startScreen").style.display = "";
   document.getElementById("playScreen").style.display = "none";
@@ -394,31 +394,31 @@ backBtn.addEventListener("click", () => {
 
 function nextQuestion() {
   isAnswering = false;
-if (questions.length === 0) {
-  endTime = new Date();
-  const elapsedSec = Math.floor((endTime - startTime) / 1000);
-  const minutes = Math.floor(elapsedSec / 60);
-  const seconds = elapsedSec % 60;
-  questionDiv.textContent = "おわり！";
-  document.getElementById("remaining").textContent = `のこり ${questions.length}もん`;
-  answerButtonsDiv.style.display = "none";
+  if (questions.length === 0) {
+    endTime = new Date();
+    const elapsedSec = Math.floor((endTime - startTime) / 1000);
+    const minutes = Math.floor(elapsedSec / 60);
+    const seconds = elapsedSec % 60;
+    questionDiv.textContent = "おわり！";
+    document.getElementById("remaining").textContent = `のこり ${questions.length}もん`;
+    answerButtonsDiv.style.display = "none";
+    feedbackDiv.textContent = "";
+    resultDiv.textContent = `タイム：${minutes}ふん ${seconds}びょう`;
+    return;
+  }
+  currentQuestion = questions.pop();
+  let opSymbol = currentMode === "subtraction" ? "−" : "+";
+  questionDiv.innerHTML = `
+    <span id="questionLeft">${currentQuestion.left}</span> ${opSymbol}
+    <span id="questionRight">${currentQuestion.right}</span> =
+    <span id="questionAnswer">?</span>
+  `;
   feedbackDiv.textContent = "";
-  resultDiv.textContent = `タイム：${minutes}ふん ${seconds}びょう`;
-  return;
-}
-        currentQuestion = questions.pop();
-        let opSymbol = currentMode === "subtraction" ? "−" : "+";
-        questionDiv.innerHTML = `
-  <span id="questionLeft">${currentQuestion.left}</span> ${opSymbol}
-  <span id="questionRight">${currentQuestion.right}</span> =
-  <span id="questionAnswer">?</span>
-`;
-        feedbackDiv.textContent = "";
-        renderAnswerButtons();
-        answerButtonsDiv.style.display = "block";
-        document.getElementById("remaining").textContent = `のこり ${questions.length + 1}もん`;
+  renderAnswerButtons();
+  answerButtonsDiv.style.display = "block";
+  document.getElementById("remaining").textContent = `のこり ${questions.length + 1}もん`;
 
-      }
+}
 
 function renderAnswerButtons() {
   answerButtonsDiv.innerHTML = "";
@@ -429,20 +429,19 @@ function renderAnswerButtons() {
     btn.addEventListener("click", () => checkAnswer(i));
     answerButtonsDiv.appendChild(btn);
   }
-  // 0ボタン
-const zeroBtn = document.createElement("button");
-zeroBtn.textContent = 0;
-zeroBtn.classList.add("answer-btn", "zero");
-zeroBtn.addEventListener("click", () => checkAnswer(0));
-answerButtonsDiv.appendChild(zeroBtn);
 
+  const zeroBtn = document.createElement("button");
+  zeroBtn.textContent = 0;
+  zeroBtn.classList.add("answer-btn", "zero");
+  zeroBtn.addEventListener("click", () => checkAnswer(0));
+  answerButtonsDiv.appendChild(zeroBtn);
 }
 
 function checkAnswer(userAnswer) {
   if (isAnswering) return;
 
   if (currentQuestion.answer === 10) {
-    // 10の場合だけ
+
     answerBuffer += userAnswer;
     if (answerBuffer.length === 1) {
       if (answerBuffer !== "1") {
@@ -486,6 +485,6 @@ function checkAnswer(userAnswer) {
   }
 }
 
-    </script>
-  </body>
+</script>
+</body>
 </html>
